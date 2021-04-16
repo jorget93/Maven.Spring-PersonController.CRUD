@@ -2,26 +2,28 @@ package io.zipcoder.crudapp.Controller;
 
 import io.zipcoder.crudapp.Model.Person;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 public class PersonController {
 
+    public PersonController(PersonRepository personRepo) {
+        this.personRepo = personRepo;
+    }
+
     @Autowired
     PersonRepository personRepo;
 
-    @PostMapping(value = "/person")
+    @PostMapping(value = "/people")
     public Person createPerson(Person p ){
         return personRepo.save(p);
     }
 
     @GetMapping(value = "/people/{id}")
-    public Person getPerson(Long id){
+    public Person getPerson(@PathVariable Long id){
         return personRepo.findOne(id);
     }
 
@@ -35,15 +37,15 @@ public class PersonController {
     }
 
     @PutMapping(value = "/people/{id}")
-    public Person updatePerson(Person p){
-        Person holder = personRepo.findOne(p.getIdNumber());
+    public Person updatePerson(Person p, @PathVariable Long id){
+        Person holder = personRepo.findOne(id);
         holder.setFirstName(p.getFirstName());
         holder.setLastName(p.getLastName());
-        return p;
+        return personRepo.save(holder);
     }
 
-    @GetMapping(value = "/people/{id}")
-    public void DeletePerson(int id){
+    @DeleteMapping(value = "/people/{id}")
+    public void DeletePerson(@PathVariable Long id){
         for(Person p: personRepo.findAll()){
             if(p.getIdNumber().equals(id)){
                 personRepo.delete(p);

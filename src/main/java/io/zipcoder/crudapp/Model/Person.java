@@ -8,19 +8,14 @@ import javax.persistence.Id;
 @Entity
 public class Person {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long idNumber;
-
+    private @Id @GeneratedValue(strategy = GenerationType.AUTO) Long id;
     private String firstName;
     private String lastName;
-
 
     public Person (Long idNumber, String firstName, String lastName){
         this.firstName = firstName;
         this.lastName = lastName;
-        this.idNumber = idNumber;
-
+        this.id = idNumber;
     }
 
     public Person() { }
@@ -42,8 +37,8 @@ public class Person {
     }
 
     public Long getIdNumber() {
-        return idNumber;
+        return id;
     }
 
-    public void setIdNumber(Long idNumber) { this.idNumber = idNumber;}
+    public void setIdNumber(Long idNumber) { this.id = idNumber;}
 }
